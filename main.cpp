@@ -202,9 +202,16 @@ void DFS(int adj[MAX][MAX], int n, int start, string city[]) {
 
 void printPath(int src, int dest, int nextHop[MAX][MAX], string city[])
 {
-    if (nextHop[src][dest] == -1)
+    if (nextHop[src][dest] == -1 || src == dest)
     {
-        cout << "No path exists.\n";
+        if (src == dest)
+        {
+            cout << "Path: " << city[src] << endl;
+        }
+        else
+        {
+            cout << "No path exists.\n";
+        }
         return;
     }
 
@@ -214,8 +221,16 @@ void printPath(int src, int dest, int nextHop[MAX][MAX], string city[])
     while (curr != dest)
     {
         curr = nextHop[curr][dest];
-        if (curr == -1 || curr == src)
+        if (curr == -1)
+        {
+            cout << "\nError during path reconstruction.\n";
             break;
+        }
+        if (curr == dest)
+        {
+            cout << " -> " << city[dest];
+            break;
+        }
         cout << " -> " << city[curr];
     }
 
@@ -238,8 +253,15 @@ int main()
 {
     int n;
     cout << "Enter number of cities: ";
-    cin >> n;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if (!(cin >> n) || n <= 0 || n > MAX)
+    {
+        cout << "Invalid number of cities. Exiting.\n";
+        return 1;
+    }
+
+    char c;
+    while (cin.get(c) && c != '\n')
+        ;
 
     string city[MAX];
 
@@ -281,18 +303,32 @@ int main()
         }
     }
 
+    while (cin.get(c) && c != '\n')
+        ;
+
     int choice;
     bool FloydDone = false;
 
     do
     {
         cout << "\n--- MENU ---\n";
-        cout << "1. Shortest distance between two cities\n";
+        cout << "1. Shortest distance between two cities (Floyd-Warshall)\n";
         cout << "2. Shortest path covering all cities between 2 specific cities (Path TSP)\n";
         cout << "3. Traversal of Cities (BFS/DFS)\n";
         cout << "4. Exit\n";
         cout << "Enter choice: ";
-        cin >> choice;
+        if (!(cin >> choice))
+        {
+            cout << "Invalid input. Clearing and trying again.\n";
+            cin.clear();
+            while (cin.get(c) && c != '\n')
+                ;
+            choice = 0;
+            continue;
+        }
+
+        while (cin.get(c) && c != '\n')
+            ;
 
         switch (choice)
         {
@@ -309,13 +345,14 @@ int main()
                 }
                 FloydWarshall(floydArr, nextHop, n);
                 FloydDone = true;
+                cout << "\nShortest path distances calculated.\n";
             }
 
             string s, d;
             cout << "Enter source city: ";
-            cin >> s;
+            getline(cin, s);
             cout << "Enter destination city: ";
-            cin >> d;
+            getline(cin, d);
 
             int src = getIndex(city, n, s);
             int dest = getIndex(city, n, d);
@@ -326,7 +363,7 @@ int main()
             }
             else
             {
-                if (floydArr[src][dest] == INF)
+                if (floydArr[src][dest] >= INF)
                 {
                     cout << "No path exists from " << s << " to " << d << ".\n";
                 }
@@ -334,8 +371,12 @@ int main()
                 {
                     cout << "Shortest distance from " << s << " to " << d << " is " << floydArr[src][dest] << ".\n";
                     int choose = 0;
-                    cout << "Enter 1 to print path too:";
+                    cout << "Enter 1 to print path too: ";
                     cin >> choose;
+
+                    while (cin.get(c) && c != '\n')
+                        ;
+
                     if (choose == 1)
                     {
                         printPath(src, dest, nextHop, city);
@@ -357,13 +398,14 @@ int main()
                 }
                 FloydWarshall(floydArr, nextHop, n);
                 FloydDone = true;
+                cout << "\nShortest path distances calculated.\n";
             }
 
             string s, d;
             cout << "Enter start city for the path (Source): ";
-            cin >> s;
+            getline(cin, s);
             cout << "Enter end city for the path (Destination): ";
-            cin >> d;
+            getline(cin, d);
 
             int src = getIndex(city, n, s);
             int dest = getIndex(city, n, d);
