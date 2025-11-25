@@ -3,8 +3,11 @@
 A C++ console-based system that allows users to:
 
 - Compute the **shortest distance between two cities** using the **Floyd–Warshall algorithm**
+
 - Compute a **Hamiltonian Path (Path-TSP)** between two cities that visits all other cities exactly once (Brute-force permutation method)
-- *(Placeholder)* City traversal (BFS/DFS) — coming soon
+
+- Compute a **City Traversal (BFS/DFS)** starting from a specified city.
+
 - Manage city names, distances, and run multiple queries in a menu-driven interface
 
 ---
@@ -23,14 +26,13 @@ Finds the **shortest route** that:
 - Ends at **destination**
 - Visits **every other city exactly once**
 
-**Algorithm:** Brute-force permutation  
-**Time complexity:** `O((N-2)! * N)`  
-**Recommended:** Works only for small graphs (**N < 11–12**)
+**Algorithm:** Brute-force permutation
+**Time complexity:** O((N-2)! * N)
+**Recommended:** Works only for small graphs **(N < 11–12)**
 
 ---
 
-### ❌ **3. Traversal (BFS/DFS)**  
-Not implemented yet — reserved for team members.
+### ✅ 3. Traversal (BFS/DFS) Implemented. Allows for traversing the graph structure starting from any city using either Breadth-First Search (BFS) or Depth-First Search (DFS). This shows how the cities are connected by direct edges.
 
 ---
 
@@ -46,37 +48,53 @@ g++ Main.cpp -o Main
 ./Main
 ```
 
-## 📌 **Code Architecture Overview**
-
-### 🔧 **Algorithms Used**
+## 📌 Code Architecture Overview & 🔧 Algorithms Used
 
 ---
 
 ### **1. Floyd–Warshall Algorithm**
+
 A dynamic programming algorithm used to compute the **shortest paths between all pairs of cities**.
 
-**Purpose in this project:**
+#### **Purpose in this project**
 - Computes **all-pair shortest distances**
-- Builds the **`nextHop` matrix**, which is later used to reconstruct paths efficiently
-- Ensures that even if a city pair has no direct edge, indirect shortest routes are identified
+- Builds the **`nextHop` matrix** for efficient route reconstruction
+- Identifies indirect shortest routes even when no direct connection exists
 
 ---
 
 ### **2. Brute-force Permutation (Hamiltonian Path / Path-TSP)**
-Used to find the **shortest route from a given source to a given destination** while visiting **all other cities exactly once**.
 
-**How it works:**
-- Generates **all permutations** of intermediate cities  
+Used to compute the **shortest route from a given source to a given destination** while visiting **all other cities exactly once**.
+
+#### **How it works**
+- Generates **all permutations** of intermediate cities
 - For each permutation:
-  - Computes full route distance (Source → permutation → Destination)
-  - Validates whether all legs in the path exist
-- Tracks:
-  - **Global minimum path distance**
-  - **Best intermediate sequence** in `g_best_intermediate_path`
+  - Computes complete route distance  
+    **Source → permutation → Destination**
+  - Validates every edge of the path
 
-**Notes:**
-- Time complexity: **O((N-2)! × N)**  
-- Practical only for small datasets (`N < 11`)
+#### **Tracks**
+- **Global minimum path distance**
+- **Best intermediate sequence** stored in `g_best_intermediate_path`
+
+#### **Notes**
+- **Time complexity:** `O((N-2)! × N)`
+- **Recommended for:** small graphs (**N < 11**)
+
+---
+
+### **3. Breadth-First Search (BFS) & Depth-First Search (DFS)**
+
+Graph traversal algorithms used to explore all reachable cities from a starting point.
+
+#### **Purpose in this project**
+- **BFS**  
+  - Explores neighboring cities level-by-level  
+  - Useful for shortest path in terms of number of hops (unweighted)
+- **DFS**  
+  - Explores deep paths before backtracking  
+  - Useful for connectivity and structure exploration
 
 ---
 
