@@ -152,12 +152,11 @@ void findShortestHamiltonianPath(int n, string city[], int floydArr[MAX][MAX], i
             cout << " -> " << city[g_best_intermediate_path[i]];
         }
         cout << " -> " << city[destIndex] << "\n";
-
-        cout << "\nNOTE: This solution uses a brute-force approach (O((N-2)! * N)), which is only practical for graphs with a small number of cities (N < 11-12).\n";
     }
 }
 
-void BFS(int adj[MAX][MAX], int n, int start, string city[]) {
+void BFS(int adj[MAX][MAX], int n, int start, string city[])
+{
     bool visited[MAX] = {false};
     int queue[MAX];
     int front = 0, rear = 0;
@@ -167,12 +166,15 @@ void BFS(int adj[MAX][MAX], int n, int start, string city[]) {
 
     cout << "BFS Traversal: ";
 
-    while (front < rear) {
+    while (front < rear)
+    {
         int current = queue[front++];
         cout << city[current] << " ";
 
-        for (int i = 0; i < n; i++) {
-            if (adj[current][i] != INF && !visited[i] && current != i) {
+        for (int i = 0; i < n; i++)
+        {
+            if (adj[current][i] != INF && !visited[i] && current != i)
+            {
                 visited[i] = true;
                 queue[rear++] = i;
             }
@@ -182,18 +184,22 @@ void BFS(int adj[MAX][MAX], int n, int start, string city[]) {
     cout << endl;
 }
 
-void DFSUtil(int adj[MAX][MAX], int n, int node, bool visited[], string city[]) {
+void DFSUtil(int adj[MAX][MAX], int n, int node, bool visited[], string city[])
+{
     visited[node] = true;
     cout << city[node] << " ";
 
-    for (int i = 0; i < n; i++) {
-        if (adj[node][i] != INF && !visited[i] && node != i) {
+    for (int i = 0; i < n; i++)
+    {
+        if (adj[node][i] != INF && !visited[i] && node != i)
+        {
             DFSUtil(adj, n, i, visited, city);
         }
     }
 }
 
-void DFS(int adj[MAX][MAX], int n, int start, string city[]) {
+void DFS(int adj[MAX][MAX], int n, int start, string city[])
+{
     bool visited[MAX] = {false};
     cout << "DFS Traversal: ";
     DFSUtil(adj, n, start, visited, city);
@@ -424,31 +430,36 @@ int main()
             }
             break;
         }
-        case 3:{
+        case 3:
+        {
             string startCity;
             cout << "Enter starting city for traversal: ";
             cin >> startCity;
             int start = getIndex(city, n, startCity);
-        if (start == -1){
-            cout << "Invalid city name.\n";
+            if (start == -1)
+            {
+                cout << "Invalid city name.\n";
+                break;
+            }
+            int opt;
+            cout << "\nChoose Traversal Method:\n";
+            cout << "1. BFS\n";
+            cout << "2. DFS\n";
+            cout << "Enter choice: ";
+            cin >> opt;
+            if (opt == 1)
+            {
+                BFS(adj, n, start, city);
+            }
+            else if (opt == 2)
+            {
+                DFS(adj, n, start, city);
+            }
+            else
+            {
+                cout << "Invalid traversal choice.\n";
+            }
             break;
-        }
-        int opt;
-        cout << "\nChoose Traversal Method:\n";
-        cout << "1. BFS\n";
-        cout << "2. DFS\n";
-        cout << "Enter choice: ";
-        cin >> opt;
-        if (opt == 1){
-            BFS(adj, n, start, city);
-        }
-        else if (opt == 2){
-            DFS(adj, n, start, city);
-        }
-        else{
-            cout << "Invalid traversal choice.\n";
-        }
-        break;
         }
         case 4:
         {
