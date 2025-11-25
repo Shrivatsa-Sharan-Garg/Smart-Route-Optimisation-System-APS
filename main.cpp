@@ -32,6 +32,43 @@ void FloydWarshall(int dist[MAX][MAX], int nextHop[MAX][MAX], int n)
     }
 }
 
+void printPath(int src, int dest, int nextHop[MAX][MAX], string city[])
+{
+    if (nextHop[src][dest] == -1 || src == dest)
+    {
+        if (src == dest)
+        {
+            cout << "Path: " << city[src] << endl;
+        }
+        else
+        {
+            cout << "No path exists.\n";
+        }
+        return;
+    }
+
+    cout << "Path: " << city[src];
+
+    int curr = src;
+    while (curr != dest)
+    {
+        curr = nextHop[curr][dest];
+        if (curr == -1)
+        {
+            cout << "\nError during path reconstruction.\n";
+            break;
+        }
+        if (curr == dest)
+        {
+            cout << " -> " << city[dest];
+            break;
+        }
+        cout << " -> " << city[curr];
+    }
+
+    cout << endl;
+}
+
 void swapInt(int &a, int &b)
 {
     int temp = a;
@@ -197,43 +234,6 @@ void DFS(int adj[MAX][MAX], int n, int start, string city[]) {
     bool visited[MAX] = {false};
     cout << "DFS Traversal: ";
     DFSUtil(adj, n, start, visited, city);
-    cout << endl;
-}
-
-void printPath(int src, int dest, int nextHop[MAX][MAX], string city[])
-{
-    if (nextHop[src][dest] == -1 || src == dest)
-    {
-        if (src == dest)
-        {
-            cout << "Path: " << city[src] << endl;
-        }
-        else
-        {
-            cout << "No path exists.\n";
-        }
-        return;
-    }
-
-    cout << "Path: " << city[src];
-
-    int curr = src;
-    while (curr != dest)
-    {
-        curr = nextHop[curr][dest];
-        if (curr == -1)
-        {
-            cout << "\nError during path reconstruction.\n";
-            break;
-        }
-        if (curr == dest)
-        {
-            cout << " -> " << city[dest];
-            break;
-        }
-        cout << " -> " << city[curr];
-    }
-
     cout << endl;
 }
 
