@@ -11,6 +11,27 @@ long long g_min_path_distance = INF;
 int g_best_intermediate_path[MAX];
 int g_path_size = 0;
 
+void FloydWarshall(int dist[MAX][MAX], int nextHop[MAX][MAX], int n)
+{
+    for (int k = 0; k < n; k++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (dist[i][k] < INF && dist[k][j] < INF)
+                {
+                    if (dist[i][k] + dist[k][j] < dist[i][j])
+                    {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                        nextHop[i][j] = nextHop[i][k];
+                    }
+                }
+            }
+        }
+    }
+}
+
 void swapInt(int &a, int &b)
 {
     int temp = a;
@@ -133,27 +154,6 @@ void findShortestHamiltonianPath(int n, string city[], int floydArr[MAX][MAX], i
         cout << " -> " << city[destIndex] << "\n";
 
         cout << "\nNOTE: This solution uses a brute-force approach (O((N-2)! * N)), which is only practical for graphs with a small number of cities (N < 11-12).\n";
-    }
-}
-
-void FloydWarshall(int dist[MAX][MAX], int nextHop[MAX][MAX], int n)
-{
-    for (int k = 0; k < n; k++)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (dist[i][k] < INF && dist[k][j] < INF)
-                {
-                    if (dist[i][k] + dist[k][j] < dist[i][j])
-                    {
-                        dist[i][j] = dist[i][k] + dist[k][j];
-                        nextHop[i][j] = nextHop[i][k];
-                    }
-                }
-            }
-        }
     }
 }
 
